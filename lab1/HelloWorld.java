@@ -8,8 +8,8 @@ public class HelloWorld {
 
         n *= 3;
 
-        n += Integer.parseInt("10101", 2); 
-        n += Integer.parseInt("FF", 16); 
+        n += 0b10101;
+        n += 0xFF;
         n *= 6;
 
         int sum = 10;
