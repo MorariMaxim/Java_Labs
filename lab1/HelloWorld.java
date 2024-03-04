@@ -1,5 +1,11 @@
+
 public class HelloWorld {
     public static void main(String args[]) {
+
+        String s1 = new String("abc");
+        String s2 = new String("afbc");
+        System.out.println(s1.equals(s2));
+
         System.out.println("Hello World!");
 
         String[] languages = { "C", "C++", "C#", "Python", "Go", "Rust", "JavaScript", "PHP", "Swift", "Java" };
@@ -22,7 +28,8 @@ public class HelloWorld {
             }
             n = sum;
         }
-
         System.out.println("Willy-nilly, this semester I will learn " + languages[sum]);
     }
+
 }
+

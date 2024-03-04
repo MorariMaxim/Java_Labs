@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -44,7 +45,7 @@ public class Problem {
         HashMap<Client, Integer> clientIndices = new HashMap<>();
 
         // hashmaps
-        int counter = 0;                
+        int counter = 0;
         for (Depot d : depots) {
             depotIndices.put(d, counter++);
         }
@@ -56,7 +57,7 @@ public class Problem {
         // generating time costs
 
         Random random = new Random();
-        
+
         for (int i = 0; i < depotsNum; i++) {
 
             for (int j = 0; j < clientsNum; j++) {
@@ -74,7 +75,6 @@ public class Problem {
 
             }
         }
-        
 
     }
 
@@ -82,4 +82,19 @@ public class Problem {
         return solution;
     }
 
+    public Vehicle[] getVehicles() {
+
+        ArrayList<Vehicle> vehics = new ArrayList<>();
+
+        for (Depot d : depots) {
+
+            for (Vehicle v : d.getVehicles()) {
+
+                vehics.add(v);
+
+            }
+        }
+
+        return vehics.toArray(new Vehicle[0]);
+    }
 }

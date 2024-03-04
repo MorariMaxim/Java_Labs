@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Depot {
 
     private String name;
@@ -30,5 +28,15 @@ public class Depot {
 
     public void setVehicles(Vehicle[] vehicles) {
         this.vehicles = vehicles;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Depot)) {
+            return false;
+        }
+        Depot other = (Depot) obj;
+        return name.equals(other.name);
+
     }
 }

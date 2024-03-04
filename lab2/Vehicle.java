@@ -1,4 +1,4 @@
-public class Vehicle {
+public abstract class Vehicle {
 
     private Depot depot;
 
@@ -27,5 +27,15 @@ public class Vehicle {
 
     public Depot getDepot() {
         return depot;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Vehicle)) {
+            return false;
+        }
+        Vehicle other = (Vehicle) obj;
+        return name.equals(other.name);
+
     }
 }

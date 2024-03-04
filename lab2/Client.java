@@ -32,6 +32,7 @@ public class Client {
     public ClientType getType() {
         return type;
     }
+
     public void setType(ClientType type) {
         this.type = type;
     }
@@ -40,28 +41,14 @@ public class Client {
     public String toString() {
         return name;
     }
- 
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+        if (!(obj instanceof Client)) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
+        }
         Client other = (Client) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (visitingInterval != other.visitingInterval)
-            return false;
-        if (type != other.type)
-            return false;
-        return true;
+        return name.equals(other.name);
+
     }
-
-    
 }
-

@@ -11,11 +11,11 @@ public class Main {
 
         Depot depot1 = new Depot("depot1");
 
-        Vehicle vehicle1 = new Vehicle("vehicle1");
+        Truck vehicle1 = new Truck("truck1");
 
         Depot depot2 = new Depot("depot2");
 
-        Vehicle vehicle2 = new Vehicle("vehicle2");
+        Drone vehicle2 = new Drone("drone1");
 
         depot1.setVehicles( new Vehicle[]{vehicle1});
 
@@ -33,5 +33,9 @@ public class Main {
         problem.solve();
 
 
+        for (Vehicle v : problem.getVehicles()) {
+
+            System.out.println(v.getName());
+        }
     }
 }
