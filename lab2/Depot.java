@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 public class Depot {
 
     private String name;
 
-    Vehicle vehicles[];
+    ArrayList<Vehicle> vehicles = new ArrayList<>();
 
     public Depot(String name) {
         this.name = name;
@@ -16,18 +18,9 @@ public class Depot {
         this.name = name;
     }
 
-    
     @Override
     public String toString() {
-        return name;
-    }
-
-    public Vehicle[] getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(Vehicle[] vehicles) {
-        this.vehicles = vehicles;
+        return "Depot " + name;
     }
 
     @Override
@@ -39,4 +32,25 @@ public class Depot {
         return name.equals(other.name);
 
     }
+
+    public ArrayList<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void addVehicles(Vehicle... args) {
+        for (Vehicle v : args) {
+            boolean add = true;
+            for (Vehicle other : vehicles) {
+                if (other.equals(v)) {
+                    add = false;
+                    break;
+                }
+            }
+            if (add) {
+                vehicles.add(v);
+                v.setDepot(this);
+            }
+        }
+    }
+
 }

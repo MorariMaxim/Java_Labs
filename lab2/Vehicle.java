@@ -22,7 +22,7 @@ public abstract class Vehicle {
 
     @Override
     public String toString() {
-        return name;
+        return "Vehicle " + name;
     }
 
     public Depot getDepot() {
