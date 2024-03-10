@@ -1,96 +1,106 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList; 
+import java.util.HashMap; 
 import java.util.Random;
-
-import javax.sound.midi.Soundbank;
-
+ 
+/**
+ * Represents a problem instance for vehicle routing.
+ */
 public class Problem {
 
+    /**
+     * The solution to the vehicle routing problem.
+     */
     Solution solution = null;
 
+    /**
+     * List of clients that have not been served yet.
+     */
     ArrayList<Client> unservedClients = new ArrayList<>();
 
+    /**
+     * Map to store indices for depots and clients.
+     */
     HashMap<String, Integer> indicesMap = new HashMap<>();
 
+    /**
+     * Cost matrix representing distances or times between locations.
+     */
     int[][] costMatrix;
 
+    /**
+     * List of depots.
+     */
     private ArrayList<Depot> depots = new ArrayList<>();
 
+    /**
+     * List of clients.
+     */
     private ArrayList<Client> clients = new ArrayList<>();
 
+    /**
+     * Solves the vehicle routing problem.
+     */
     public void solve() {
-
+        // Fill the problem with random data
         this.randomlyFillProblem(0, 24 * 60, 24, 5, 3, 1, 5, 60);
 
         this.initDSforSolution();
 
         ArrayList<Client> remainingClients = new ArrayList<>(clients);
 
-        // either a client or a depot the current vehicle is at
+        // Initialize variables for tracking vehicle routes
         int currentPosition = -1;
-
         int currentTime = 0;
-        // trying to find a route for each vehicle
-
         ArrayList<Tour> tours = new ArrayList<>();
 
         for (Vehicle currentVehicle : this.getVehicles()) {
-
             currentTime = 0;
-
             Tour currentTour = new Tour(currentVehicle);
-
             currentPosition = indicesMap.get(currentVehicle.getDepot().toString());
-
             boolean keepOn = true;
-
             if (remainingClients.isEmpty())
                 keepOn = false;
-
             while (keepOn) {
-
-                // getting the closest client
+                // Find the closest client
                 int closestClientIndex = 0;
                 int minServeTime = Integer.MAX_VALUE;
-
                 int currentIndex = 0;
                 for (Client c : remainingClients) {
-
                     int serveTime = this.getServeTime(currentPosition, currentTime, c);
-
                     if (serveTime < minServeTime) {
                         minServeTime = serveTime;
                         closestClientIndex = currentIndex;
                     }
                     currentIndex++;
                 }
-
                 if (minServeTime < Integer.MAX_VALUE) {
 
                     currentTour.addClient(remainingClients.get(closestClientIndex), minServeTime);
 
-                    remainingClients.remove(closestClientIndex);
-
+                    currentPosition = indicesMap.get(remainingClients.get(closestClientIndex).toString());
+                    
                     currentTime = minServeTime;
+
+                    remainingClients.remove(closestClientIndex);                    
+                    
                 } else
                     keepOn = false;
-
             }
-
             tours.add(currentTour);
         }
 
+        // Create the solution
         solution = new Solution();
-
         solution.setTours(tours);
-
         unservedClients = remainingClients;
     }
 
+    /**
+     * Prints the problem including the cost matrix and actors (clients, depots, vehicles).
+     *
+     * @param printMatrix  True if the cost matrix should be printed.
+     * @param printActors  True if the actors (clients, depots, vehicles) should be printed.
+     */
     public void printProblem(boolean printMatrix, boolean printActors) {
 
         if (solution == null) {
@@ -115,7 +125,6 @@ public class Problem {
             }
 
             for (Vehicle v : getVehicles()) {
-
                 System.out.println(v + ", starts at id = " + indicesMap.get(v.getDepot().toString()));
             }
         }
@@ -126,6 +135,11 @@ public class Problem {
 
     }
 
+    /**
+     * Initializes data structures needed for the solution.
+     *
+     * @return True if initialization was successful, false otherwise.
+     */
     private boolean initDSforSolution() {
         int depotsNum = depots.size();
         int clientsNum = clients.size();
@@ -147,6 +161,14 @@ public class Problem {
         return true;
     }
 
+    /**
+     * Calculates the time it takes to serve a client at a specific location and time.
+     *
+     * @param location The current location.
+     * @param currentTime The current time.
+     * @param client The client to serve.
+     * @return The time it takes to serve the client.
+     */
     private int getServeTime(int location, int currentTime, Client client) {
 
         int arrivalTime = currentTime + costMatrix[location][indicesMap.get(client.toString())];
@@ -166,6 +188,12 @@ public class Problem {
 
     }
 
+    /**
+     * Fills the cost matrix with random time costs.
+     *
+     * @param timeCostMin The minimum time cost.
+     * @param timeCostMax The maximum time cost.
+     */
     private void fillCostMatrix(int timeCostMin, int timeCostMax) {
 
         int depotsNum = depots.size();
@@ -177,48 +205,47 @@ public class Problem {
 
         // no depot to depot
         for (int i = 0; i < depotsNum; i++) {
-
             for (int j = 0; j < depotsNum; j++) {
-
                 costMatrix[i][j] = Integer.MAX_VALUE;
-
             }
         }
+
         // depot to client
         for (int i = 0; i < depotsNum; i++) {
-
             for (int j = depotsNum; j < n; j++) {
-
                 costMatrix[i][j] = timeCostMin + random.nextInt(timeCostMax - timeCostMin);
-
             }
         }
 
         // no client to depot
-
         for (int i = depotsNum; i < n; i++) {
-
             for (int j = 0; j < depotsNum; j++) {
-
                 costMatrix[i][j] = Integer.MAX_VALUE;
             }
         }
 
         // client to client
-
         for (int i = depotsNum; i < n; i++) {
-
             for (int j = depotsNum; j < n; j++) {
-
                 costMatrix[i][j] = timeCostMin + random.nextInt(timeCostMax - timeCostMin);
             }
         }
     }
 
+    /**
+     * Gets the solution to the vehicle routing problem.
+     *
+     * @return The solution.
+     */
     public Solution getSolution() {
         return solution;
     }
 
+    /**
+     * Gets an array of vehicles from the depots.
+     *
+     * @return An array of vehicles.
+     */
     public Vehicle[] getVehicles() {
 
         ArrayList<Vehicle> vehics = new ArrayList<>();
@@ -235,6 +262,11 @@ public class Problem {
         return vehics.toArray(new Vehicle[0]);
     }
 
+    /**
+     * Prints a matrix to the console.
+     *
+     * @param matrix The matrix to print.
+     */
     public static void printMatrix(int[][] matrix) {
         int numRows = matrix.length;
         int numCols = matrix[0].length;
@@ -269,6 +301,11 @@ public class Problem {
         }
     }
 
+    /**
+     * Adds clients to the problem instance.
+     *
+     * @param args The clients to add.
+     */
     public void addClients(Client... args) {
 
         for (Client c : args) {
@@ -285,6 +322,11 @@ public class Problem {
 
     }
 
+    /**
+     * Adds depots to the problem instance.
+     *
+     * @param args The depots to add.
+     */
     public void addDepots(Depot... args) {
         for (Depot d : args) {
             boolean add = true;
@@ -299,8 +341,21 @@ public class Problem {
         }
     }
 
+    /**
+     * Randomly fills the problem with clients, depots, and assigns random time costs.
+     *
+     * @param timeIntervalStart     Start of the time interval.
+     * @param timeIntervalEnd       End of the time interval.
+     * @param timeIntervalSections  Number of time interval sections.
+     * @param clientsPerSection     Number of clients per time interval section.
+     * @param depotsNum             Number of depots.
+     * @param vehiclePerDepotNum    Number of vehicles per depot.
+     * @param timeCostMin           Minimum time cost.
+     * @param timeCostMax           Maximum time cost.
+     */
     public void randomlyFillProblem(int timeIntervalStart, int timeIntervalEnd, int timeIntervalSections,
-            int clientsPerSection, int depotsNum, int vehiclePerDepotNum, int timeCostMin, int timeCostMax) {
+                                    int clientsPerSection, int depotsNum, int vehiclePerDepotNum,
+                                    int timeCostMin, int timeCostMax) {
 
         int droneCount = 0;
         int truckCount = 0;

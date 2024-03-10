@@ -7,9 +7,13 @@ public class Main {
 
     public static void main(String args[]) {
 
-        Problem problem = new Problem();
+        char c = '\u0254';
 
-        problem.printProblem(false, true);
+        System.out.print("£");
+        
+        /*ProblemAsGrid problem = new ProblemAsGrid();
+
+        problem.printProblemAsGrid(false, false); */
 
     }
 
