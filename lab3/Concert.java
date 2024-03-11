@@ -24,6 +24,9 @@ public class Concert extends Attraction implements Payable, Visitable {
     public double getEntryFee() {
         return entryFee;
     }
-
+    @Override
+    public boolean sameAttractionType(Attraction other) {
+        return other instanceof Concert;
+    }
     
 }

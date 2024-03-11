@@ -1,0 +1,38 @@
+2024-03-11
+	 during 01:00 to 05:00 Statue#0 - description
+	 during 07:00 to 09:00 Concert#0 - description
+	 during 12:00 to 21:00 Church#2 - description
+	 during 22:00 to 22:00 Church#0 - description
+2024-03-12
+	 during 02:00 to 02:00 Church#3 - description
+	 during 06:00 to 13:00 Church#4 - description
+	 during 16:00 to 17:00 Statue#3 - description
+	 during 23:00 to 23:00 Church#5 - description
+2024-03-13
+	 during 00:00 to 03:00 Statue#6 - description
+	 during 10:00 to 16:00 Church#6 - description
+	 during 17:00 to 19:00 Church#7 - description
+2024-03-14
+	 during 07:00 to 12:00 Church#10 - description
+	 during 20:00 to 23:00 Church#9 - description
+2024-03-15
+	 during 01:00 to 06:00 Church#13 - description
+	 during 13:00 to 18:00 Concert#14 - description
+	 during 19:00 to 21:00 Church#12 - description
+2024-03-16
+	 during 05:00 to 11:00 Statue#16 - description
+	 during 12:00 to 13:00 Concert#16 - description
+	 during 15:00 to 17:00 Concert#15 - description
+	 during 18:00 to 22:00 Church#15 - description
+2024-03-17
+	 during 04:00 to 08:00 Statue#19 - description
+	 during 16:00 to 17:00 Concert#18 - description
+	 during 19:00 to 19:00 Church#19 - description
+	 during 23:00 to 23:00 Concert#19 - description
+2024-03-18
+	 during 07:00 to 07:00 Statue#22 - description
+	 during 12:00 to 15:00 Church#22 - description
+	 during 17:00 to 21:00 Church#21 - description
+	 during 23:00 to 23:00 Concert#21 - description
+
+A total of 28 attractions to visit 

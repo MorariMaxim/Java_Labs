@@ -2,14 +2,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Map;
 
-class Attraction implements Comparable<Attraction> {
-    
+abstract class Attraction implements Comparable<Attraction> {
+
     protected String name;
-    protected String description;
+    protected String description;  
 
-    protected Map<LocalDate, Pair<LocalTime,LocalTime>> visitingTimetable;
+    protected Map<LocalDate, Pair<LocalTime, LocalTime>> visitingTimetable;
 
-    public Attraction(String name, String description) {
+    protected Attraction(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -23,4 +23,6 @@ class Attraction implements Comparable<Attraction> {
     public int compareTo(Attraction other) {
         return this.name.compareTo(other.name);
     }
+
+    public abstract boolean sameAttractionType(Attraction other);
 }

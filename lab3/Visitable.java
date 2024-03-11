@@ -10,13 +10,24 @@ public interface Visitable {
         var temp = getVisitingTimetable().get(date);
         if (temp == null) {
             System.err.println(this.toString() + "has no entry for " + date);
-            return null;}
-        return temp.getFirst();        
+            return null;
+        }
+        return temp.getFirst();
     }
 
-    default void setVisitInterval(LocalDate day, Pair<LocalTime, LocalTime> interval){
+    default void setVisitInterval(LocalDate day, Pair<LocalTime, LocalTime> interval) {
 
         getVisitingTimetable().put(day, interval);
+    }
+
+    default boolean isOpenOnDay(LocalDate day) {
+
+        return getVisitingTimetable().get(day) != null;
+    }
+
+    default Pair<LocalTime, LocalTime> getInterval(LocalDate date) {
+        
+        return getVisitingTimetable().get(date);
     }
 
     static class VisitableComparator implements Comparator<Visitable> {

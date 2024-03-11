@@ -17,4 +17,9 @@ public class Statue extends Attraction implements Visitable {
     public Map<LocalDate, Pair<LocalTime, LocalTime>> getVisitingTimetable() {
         return visitingTimetable;
     }
+
+    @Override
+    public boolean sameAttractionType(Attraction other) {
+        return other instanceof Statue;
+    }
 }
