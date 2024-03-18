@@ -37,6 +37,13 @@ public class Main {
 
             tr.addAttraction(concert);
 
+            LocalDate day = today;
+
+            System.out.println("Sorted by opening hour, opened on " + day);
+
+            tr.displayVisitableNonPayable(day); 
+
+            
             TravelPlan travelPlan = new TravelPlan();
 
             travelPlan.addAttractionToVisit(today, church);
@@ -47,6 +54,8 @@ public class Main {
 
             travelPlan.addAttractionToVisit(afterTomorrow, concert);
 
+
+            System.out.println("Travel plan:");
             travelPlan.dislpayAgenda(false, null);
         } else {
 

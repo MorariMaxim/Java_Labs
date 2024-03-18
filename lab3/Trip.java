@@ -42,11 +42,12 @@ public class Trip {
         return attractions;
     }
 
-    public void displayVisitableNonPayable() {
+    public void displayVisitableNonPayable(LocalDate day) {
 
         attractions.stream()
                 .filter(attraction -> attraction instanceof Visitable && !(attraction instanceof Payable))
-                .sorted(Comparator.comparing(attraction -> ((Visitable) attraction).getOpeningHour(periodStart)))
+                .filter(attraction -> ((Visitable)attraction).isOpenOnDay(day))
+                .sorted(Comparator.comparing(attraction -> ((Visitable) attraction).getOpeningHour(day)))
                 .forEach(System.out::println);
     }
 

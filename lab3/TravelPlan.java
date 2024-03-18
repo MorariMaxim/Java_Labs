@@ -2,8 +2,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.HashMap; 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,6 +11,7 @@ import java.util.TreeSet;
 public class TravelPlan {
 
     private TreeMap<LocalDate, TreeSet<Visitable>> agenda = new TreeMap<>();
+    //private Map<LocalDate, Set<Visitable>> agenda = new TreeMap<LocalDate, TreeSet<Visitable>>();
 
     public void setAgenda(TreeMap<LocalDate, TreeSet<Visitable>> agenda) {
         this.agenda = agenda;
