@@ -1,0 +1,7 @@
+mvn install:install-file -Dfile="D:\Uni\Anul 2\sem 2\Java\AP24_2_A3_Maxim_Morari\graph4j.jar" -DgroupId=Graph4J_gid -DartifactId=Graph4J_aid -Dversion=1 -Dpackaging=jar
+
+<dependency>
+    <groupId>Graph4J_gid</groupId>
+    <artifactId>Graph4J_aid</artifactId>
+    <version>1.0</version>
+</dependency>
