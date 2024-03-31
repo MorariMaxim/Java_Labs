@@ -1,0 +1,25 @@
+{
+  "name" : "masterDirectory",
+  "path" : "D:\\Uni\\Anul 2\\sem 2\\Java\\AP24_2_A3_Maxim_Morari\\lab5\\.\\masterDirectory",
+  "children" : [ {
+    "name" : "abilities.xlsx",
+    "type" : "file",
+    "path" : "D:\\Uni\\Anul 2\\sem 2\\Java\\AP24_2_A3_Maxim_Morari\\lab5\\.\\masterDirectory\\abilities.xlsx"
+  }, {
+    "name" : "person1",
+    "path" : "D:\\Uni\\Anul 2\\sem 2\\Java\\AP24_2_A3_Maxim_Morari\\lab5\\.\\masterDirectory\\person1",
+    "children" : [ {
+      "name" : "index.html",
+      "type" : "file",
+      "path" : "D:\\Uni\\Anul 2\\sem 2\\Java\\AP24_2_A3_Maxim_Morari\\lab5\\.\\masterDirectory\\person1\\index.html"
+    } ]
+  }, {
+    "name" : "person2",
+    "path" : "D:\\Uni\\Anul 2\\sem 2\\Java\\AP24_2_A3_Maxim_Morari\\lab5\\.\\masterDirectory\\person2",
+    "children" : [ {
+      "name" : "file.txt",
+      "type" : "file",
+      "path" : "D:\\Uni\\Anul 2\\sem 2\\Java\\AP24_2_A3_Maxim_Morari\\lab5\\.\\masterDirectory\\person2\\file.txt"
+    } ]
+  } ]
+}
