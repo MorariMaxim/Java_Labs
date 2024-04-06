@@ -97,11 +97,11 @@ public class Player extends Thread {
                 int source = originalToNew.get(token.getNumber1());
                 int target = originalToNew.get(token.getNumber2());
 
-                // System.out.println("added " + source + ", " + target);
+                 
                 graphbuilder.addEdge(source, target);
 
-                // this doesn't work, because of Integer vs int (int source ...)
-                // graphbuilder.addEdge(originalToNew.get(token.getNumber1()),originalToNew.get(token.getNumber2()));
+                 
+                 
 
             }
 

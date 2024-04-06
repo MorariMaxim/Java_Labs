@@ -26,8 +26,8 @@ public class TokenBag {
 
     public synchronized Token extractToken() {
 
-        if (!tokens.isEmpty()) {
-            //System.out.println(getRemaining() + " remaining in tokenbag");
+        if (!tokens.isEmpty()) { 
+             
             return tokens.remove(tokens.size() - 1);
 
         }
