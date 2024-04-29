@@ -1,4 +1,5 @@
 drop table authorship;
+drop table genres;
 drop table books;
 drop table authors;
 

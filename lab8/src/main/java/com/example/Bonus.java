@@ -1,5 +1,6 @@
 package com.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import org.graph4j.GraphBuilder;
 import org.graph4j.alg.coloring.Coloring;
 import org.graph4j.alg.coloring.eq.*;
 import org.graph4j.util.VertexSet;
+ 
 
 public class Bonus {
 
@@ -26,7 +28,7 @@ public class Bonus {
         /*
          * List<Book> books = new ArrayList<>();
          * Book book = new Book(0, null, null, null, 0);
-         * // book.setAuthors(null);
+         * 
          * book.setAuthors(Arrays.asList(new Author(0, "JKROWLING")));
          * book.setGenres(new ArrayList<>());
          * books.add(book);
@@ -39,11 +41,11 @@ public class Bonus {
          * books.add(book);
          */
 
-        // System.out.println(books);
+        
 
         booksGraph = constructGraph(books);
 
-        createReadingLists(booksGraph,books);
+        createReadingLists(booksGraph, books);
 
     }
 
@@ -97,17 +99,31 @@ public class Bonus {
 
         Map<Integer, VertexSet> classes = coloring.getColorClasses();
 
+        List<ReadingList> readingLists = new ArrayList<>();
+
+        int counter = 0;
         for (var entry : classes.entrySet()) {
 
             var set = entry.getValue();
 
-            System.out.print("[");
-            for(var index : set) {
+            ReadingList readingList = new ReadingList();
 
-                System.out.print(books.get(index).getTitle() + ", ");
+            readingList.setName("readinglist#" + counter++);
+            readingList.setCreationTimeStam(LocalDate.now());
+            List<Book> booksList = new ArrayList<>();
+
+            for (var index : set) {
+                booksList.add(books.get(index));
             }
-            System.out.println("]");
-        }
 
+            readingList.setBooks(booksList);
+
+            readingLists.add(readingList);
+        }
+        for (var list : readingLists) {
+
+            System.out.println(list);
+
+        }
     }
 }

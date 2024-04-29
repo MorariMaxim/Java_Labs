@@ -34,9 +34,9 @@ public class DataImporter {
 
                 java.util.Date publicationDate = getDateFromGoodReadsDateFormat(parts[10]);
 
-                // Trim and collect the elements into a List
+                
                 List<String> authors = Arrays.stream(parts[2].split("/"))
-                        .map(String::trim) // Trim each element
+                        .map(String::trim) 
                         .collect(Collectors.toList());
 
                 String title = parts[1];

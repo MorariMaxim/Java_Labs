@@ -10,7 +10,7 @@ public class PalmerAlgorithm {
     public PalmerAlgorithm(Graph graph) {
 
         if (respectsOreProperty(graph) == false) {
-            throw new IllegalStateException("Doesn't respect ore property");
+            throw new RuntimeException("Doesn't respect ore property");
         }
 
         int[] vertices = graph.vertices();
@@ -57,7 +57,7 @@ public class PalmerAlgorithm {
                     }
                     uj = uN;
                 }
-                throw new IllegalStateException("Found a gap but no mean to close it");
+                throw new RuntimeException("Something went wrong closing a gap");
             }
             vi = vN;
         }
@@ -70,6 +70,10 @@ public class PalmerAlgorithm {
 
         } else {
             Collections.reverse(array.subList(end + 1, start));
+
+            // start = 4, end = 1
+            // 1 2 3 4
+            // 1 3 2 4
 
         }
     }

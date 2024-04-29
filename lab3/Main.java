@@ -74,7 +74,6 @@ public class Main {
             travelPlan.makeAgendaForTrip(trip, TravelPlan.Heuristic.DSATUR, considerSameAttractions);
 
             travelPlan.dislpayAgenda(true, "Dsatur");
-
         }
     }
 }

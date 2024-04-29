@@ -45,7 +45,7 @@ public class AuthorDAO {
     }
 
     public int getAuthorId(String name) {
-        int authorId = -1; // Initialize to -1, indicating not found
+        int authorId = -1; 
 
         String selectAuthorId = "SELECT id FROM authors WHERE name like ?";
         try (PreparedStatement statement = connection.prepareStatement(selectAuthorId)) {

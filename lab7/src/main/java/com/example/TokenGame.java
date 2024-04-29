@@ -18,14 +18,13 @@ public class TokenGame {
             player.start();
         }
         try {
-
+            
             while (tokenBag.getRemaining() != 0) {
                 for (Player player : players) {
 
                     synchronized (tokenBag) {
                         player.setMyTurn(true);
                         tokenBag.notifyAll();
-
                     }
 
                     Thread.sleep(1);
@@ -38,7 +37,7 @@ public class TokenGame {
             System.out.println("Time is out!");
         }
 
-        Player winner = players[0];    
+        Player winner = players[0];
         for (Player player : players) {
             if (player.getMaxSequenceValue() > winner.getMaxSequenceValue()) {
                 winner = player;
@@ -47,7 +46,8 @@ public class TokenGame {
         }
 
         System.out.println("Game Over!");
-        System.out.println("Winner: " + winner.getName() + " with sequence value: " + winner.getMaxSequenceValue() + "\n" + winner.getSequenceString());
+        System.out.println("Winner: " + winner.getNameString() + " with sequence value: " + winner.getMaxSequenceValue()
+                + "\n" + winner.getSequenceString());
 
     }
 }

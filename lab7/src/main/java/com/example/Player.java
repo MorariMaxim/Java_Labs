@@ -22,6 +22,10 @@ public class Player extends Thread {
         this.gameOver = gameOver;
     }
 
+    public String getNameString() {
+        return name;
+    }
+
     public Player(String name, TokenBag tokenBag) {
         this.name = name;
         this.tokenBag = tokenBag;
@@ -33,6 +37,7 @@ public class Player extends Thread {
     public void run() {
         while (true) {
             synchronized (tokenBag) {
+                // if(tokenBag.getRemaining() == 0 ) break;
                 while (!myTurn) {
                     try {
                         tokenBag.wait();
@@ -44,10 +49,7 @@ public class Player extends Thread {
                 Token token = tokenBag.extractToken();
                 if (token != null) {
                     tokens.add(token);
-                }
-
-                if (token == null) {
-                    myTurn = false;
+                } else {
                     tokenBag.notifyAll();
                     break;
                 }
@@ -97,14 +99,11 @@ public class Player extends Thread {
                 int source = originalToNew.get(token.getNumber1());
                 int target = originalToNew.get(token.getNumber2());
 
-                 
                 graphbuilder.addEdge(source, target);
-
-                 
-                 
 
             }
 
+            var a = 10;
             Graph graph = graphbuilder.buildGraph();
 
             PalmerAlgorithm instance = new PalmerAlgorithm(graph);

@@ -193,17 +193,18 @@ public class GameState {
             } else {
                 if (display)
                     System.out.println("is not a perfect matching");
-                if (defaultResult == null || defaultResult.getKey().size() > edgeSet.size())
-                    defaultResult = new Pair<>(edgeSet, component.vertexSet());
 
-                defaultResult = new Pair<>(edgeSet, component.vertexSet());
+                unperfect = new Pair<>(edgeSet, component.vertexSet());
 
             }
+            if (defaultResult == null || defaultResult.getKey().size() > edgeSet.size())
+                defaultResult = new Pair<>(edgeSet, component.vertexSet());
 
         }
         var result = unperfect == null ? defaultResult : unperfect;
 
         Set<Pair<Integer, Integer>> edges = new HashSet<>();
+        
         result.getKey().stream().forEach(edge -> {
             List<Integer> vertices = Arrays.stream(edge.toString().replaceAll("[()\\s]+", "").split(":"))
                     .map(Integer::parseInt)
@@ -213,7 +214,7 @@ public class GameState {
 
         });
 
-        return new Pair<Set<Pair<Integer, Integer>>, Set<Integer>>(edges, result.getValue());
+        return new Pair<>(edges, result.getValue());
     }
 
     List<AsSubgraph<Integer, DefaultEdge>> getConnectedComponents() {

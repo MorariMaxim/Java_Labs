@@ -43,18 +43,17 @@ public class BookDAO {
     }
 
     public Book getBookById(int id) {
-        Book book = null; // Initialize book to null
+        Book book = null; 
 
         String selectBook = "SELECT * FROM books WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(selectBook)) {
-            // Set the id parameter in the prepared statement
+            
             statement.setInt(1, id);
-
-            // Execute the query to get the book details
+            
             try (ResultSet resultSet = statement.executeQuery()) {
-                // Check if a book with the given id exists
+                
                 if (resultSet.next()) {
-                    // If a book is found, create a Book object
+                    
                     book = new Book(
                             resultSet.getInt("id"),
                             resultSet.getString("title"),
@@ -62,11 +61,11 @@ public class BookDAO {
                             resultSet.getDate("publication"),
                             resultSet.getInt("pages"));
 
-                    // Fetch authors for the book
+                    
                     List<Author> authors = getAuthorsForBook(id);
                     book.setAuthors(authors);
 
-                    // Fetch genres for the book
+                    
                     List<String> genres = getGenresForBook(id);
                     book.setGenres(genres);
                 }
@@ -75,7 +74,7 @@ public class BookDAO {
             System.err.println("Error retrieving book: " + e.getMessage());
         }
 
-        return book; // Return the book (or null if not found)
+        return book; 
     }
 
     public List<Book> getBooks(int limit) {

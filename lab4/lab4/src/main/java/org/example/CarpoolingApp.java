@@ -14,48 +14,67 @@ public class CarpoolingApp {
 
     public static void main(String[] args) {
 
-        homework();
-        
-        //bonus(5000, 5000, 0.00001);
+        double edgeProbability = 0.0001;
+        int numberOfDestinations = (int) (1 / edgeProbability);
+
+        System.out
+                .println("edge probability = " + edgeProbability + ", numberOfDestinations = " + numberOfDestinations);
+
+        homework(5000, 5000, numberOfDestinations, false);
+
+        bonus(5000, 5000, edgeProbability);
 
     }
 
-    private static void homework() {
-        int driverCount = 10;
-        int passengerCount = 10;
-        int destinationCount = 5;
+    private static void homework(int driverCount, int passengerCount, int numberOfDestinations, boolean printCoupling) {
 
-        List<Person> people = generateRandomPeople(passengerCount, driverCount, destinationCount);
+        List<Person> people = generateRandomPeople(passengerCount, driverCount, numberOfDestinations);
         List<Driver> drivers = filterDrivers(people);
         Set<Passenger> passengers = new TreeSet<>(Comparator.comparing(Passenger::getName));
         passengers.addAll(filterPassengers(people));
         Map<Destination, List<Person>> destinationsMap = computeDestinationsMap(people);
         List<Destination> allDestinations = computeAllDestinations(drivers);
 
-        System.out.println("Drivers (sorted by age):");
-        drivers.stream().sorted(Comparator.comparing(Driver::getAge)).forEach(System.out::println);
+        if (false) {
+            System.out.println("Drivers (sorted by age):");
+            drivers.stream().sorted(Comparator.comparing(Driver::getAge)).forEach(System.out::println);
 
-        System.out.println("\nPassengers (sorted by name):");
+            System.out.println("\nPassengers (sorted by name):");
 
-        passengers.stream().forEach(passenger -> System.out.println(passenger));
+            passengers.stream().forEach(passenger -> System.out.println(passenger));
+        }
 
-        System.out.println("\nAll destinations that drivers pass through:");
-        allDestinations.forEach(System.out::println);
+        if (printCoupling) {
+            System.out.println("\nAll destinations that drivers pass through:");
+            allDestinations.forEach(System.out::println);
 
-        System.out.println("\nMap of destinations and people who want to go there:");
-        destinationsMap.forEach((destination, persons) -> {
-            System.out.println(destination.getLocation() + ": " +
-                    persons.stream().map(Person::getName).collect(Collectors.joining(", ")));
-        });
+            System.out.println("\nMap of destinations and people who want to go there:");
+            destinationsMap.forEach((destination, persons) -> {
+                System.out.println(destination.getLocation() + ": " +
+                        persons.stream().map(Person::getName).collect(Collectors.joining(", ")));
+            });
+        }
 
         var solution = solveGreedy(filterPassengers(people), filterDrivers(people));
 
-        System.out.println("\nThe solution:");
+        var number = solution.stream()
+                .filter((matching) -> matching.driver != null && matching.passenger != null).count();
 
-        solution.stream().forEach(System.out::println);
+        if (printCoupling) {
+            solution.stream()
+                    .filter((matching) -> matching.driver != null && matching.passenger != null)
+                    .forEach(matching -> System.out.println("\t" + matching));
+        }
 
-        System.out.println("A total of " + driverCount + " drivers, " + passengerCount + " passengers, "
-                + destinationCount + " destinations and " + solution.size() + " successfull couplings");
+        if (printCoupling) {
+            solution.stream()
+                    .filter((matching) -> matching.driver == null || matching.passenger == null)
+                    .forEach(matching -> System.out.println("\t" + matching));
+        }
+
+        System.out.println("\nThe Greedy solution:");
+        System.out.println(number + " matching and " + (solution.size() - number) + " lone people");
+
     }
 
     private static void bonus(int driverCount, int passengerCount, double edgeProbability) {
@@ -70,8 +89,8 @@ public class CarpoolingApp {
                 boolean hasEdge = rand.nextDouble() < edgeProbability;
 
                 if (hasEdge)
-                graphBuilder.addEdge(driver, passenger);
-                    
+                    graphBuilder.addEdge(driver, passenger);
+
             }
         }
 
@@ -81,23 +100,27 @@ public class CarpoolingApp {
 
         Matching matching = algorithm.getMatching();
 
+        System.out.println("The HopcroftKarpMaximumMatching solution: ");
+        System.out.println(matching.size() + " matchings and " + (driverCount + passengerCount - matching.size() * 2)
+                + " lone people");
 
-        System.out.println(matching.size());
+        System.out.println("Cardinality of the maximum stable set: " + algorithm.getMaximumStableSet().size());
     }
 
-    private static List<Person> generateRandomPeople(int passengerCount, int driverCount, int destinationCount) {
+    private static List<Person> generateRandomPeople(int passengerCount, int driverCount, int numberOfDestinations) {
         Faker faker = new Faker();
         List<Person> people = new LinkedList<>();
         Random rand = new Random();
 
-        List<Destination> destinations = new ArrayList<>(destinationCount);
+        Set<Destination> destinationSet = new HashSet<>();
 
-        for (int i = 0; i < destinationCount; i++) {
-
+        while (destinationSet.size() != numberOfDestinations) {
             Destination destination = new Destination(faker.address().city());
 
-            destinations.add(destination);
+            destinationSet.add(destination);
         }
+
+        List<Destination> destinations = new ArrayList<>(destinationSet);
 
         for (int i = 0; i < passengerCount; i++) {
 
@@ -105,7 +128,7 @@ public class CarpoolingApp {
 
             int age = faker.number().numberBetween(16, 80);
 
-            Passenger person = new Passenger(name, age, destinations.get(rand.nextInt(destinationCount)));
+            Passenger person = new Passenger(name, age, destinations.get(rand.nextInt(numberOfDestinations)));
 
             people.add(person);
         }
@@ -116,7 +139,7 @@ public class CarpoolingApp {
 
             int age = faker.number().numberBetween(16, 80);
 
-            Driver person = new Driver(name, age, destinations.get(rand.nextInt(destinationCount)));
+            Driver person = new Driver(name, age, destinations.get(rand.nextInt(numberOfDestinations)));
 
             people.add(person);
         }
@@ -150,16 +173,16 @@ public class CarpoolingApp {
 
     }
 
-    private static List<Coupling> solveGreedy(List<Passenger> passengers, List<Driver> drivers) {
+    private static List<DestinationMatching> solveGreedy(List<Passenger> passengers, List<Driver> drivers) {
 
         var destinationsMap = computeDestinationsMap(drivers);
 
-        List<Coupling> solution = new ArrayList<>();
+        List<DestinationMatching> solution = new ArrayList<>();
 
         for (Passenger passenger : passengers) {
 
-            Coupling coupling = new Coupling();
-            coupling.setPassenger(passenger);
+            DestinationMatching matching = new DestinationMatching();
+            matching.setPassenger(passenger);
 
             var possibleDrivers = destinationsMap.get(passenger.getDestination());
 
@@ -170,28 +193,28 @@ public class CarpoolingApp {
 
                     possibleDrivers.remove(0);
 
-                    coupling.setDriver(driver);
+                    matching.setDriver(driver);
 
                     drivers.remove(driver);
                 }
 
             }
 
-            solution.add(coupling);
+            solution.add(matching);
         }
 
         for (var driver : drivers) {
-            Coupling coupling = new Coupling();
+            DestinationMatching matching = new DestinationMatching();
 
-            coupling.setDriver(driver);
+            matching.setDriver(driver);
 
-            solution.add(coupling);
+            solution.add(matching);
         }
         return solution;
     }
 }
 
-class Coupling {
+class DestinationMatching {
 
     Driver driver;
     Passenger passenger;
@@ -199,7 +222,8 @@ class Coupling {
     @Override
     public String toString() {
 
-        return "Coupling for " + (driver == null ? passenger : driver).getDestination().getLocation() + " with "
+        return "DestinationMatching for " + (driver == null ? passenger : driver).getDestination().getLocation()
+                + " with "
                 + (driver == null ? "no Driver" : driver.toString()) + " and "
                 + (passenger == null ? "no Passenger" : passenger.toString());
     }
@@ -211,7 +235,6 @@ class Coupling {
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
-
 
     public static void printMatrix(int[][] matrix) {
         int numRows = matrix.length;

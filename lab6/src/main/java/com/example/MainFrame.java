@@ -20,14 +20,13 @@ public class MainFrame extends JFrame {
         // create the components, exactly in this order
         configPanel = new ConfigPanel(this);
         gameController = new GameController(this, configPanel.getRows(), configPanel.getCols(),
-                GameState.getMaxNumberOfEdge(configPanel.getRows(), configPanel.getCols()) *3/4);
+                GameState.getMaxNumberOfEdge(configPanel.getRows(), configPanel.getCols()) * 2 );
         canvas = new DrawingPanel(this);
         controlPanel = new ControlPanel(this);
  
         add(canvas, BorderLayout.CENTER); 
         add(configPanel, BorderLayout.NORTH);
-        add(controlPanel, BorderLayout.SOUTH);
-        
+        add(controlPanel, BorderLayout.SOUTH);        
  
         pack();
         setVisible(true);
@@ -39,6 +38,6 @@ public class MainFrame extends JFrame {
 
     void resetGameController() {
         gameController = new GameController(this, configPanel.getRows(), configPanel.getCols(),
-                GameState.getMaxNumberOfEdge(configPanel.getRows(), configPanel.getCols()) / 2);
+                GameState.getMaxNumberOfEdge(configPanel.getRows(), configPanel.getCols()) *5/6);
     }
 }

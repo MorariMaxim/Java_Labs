@@ -46,7 +46,7 @@ public class GenresDao {
             statement.setInt(1, bookId);
             statement.setString(2, genre);
             try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next(); // If there is at least one record, return true
+                return resultSet.next(); 
             }
         }
     }

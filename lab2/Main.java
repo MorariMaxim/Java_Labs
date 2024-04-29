@@ -6,14 +6,15 @@ import java.util.List;
 public class Main {
 
     public static void main(String args[]) {
-
-        char c = '\u0254';
-
-        System.out.print("£");
+ 
         
-        /*ProblemAsGrid problem = new ProblemAsGrid();
+        ProblemAsGrid problemGrid = new ProblemAsGrid();
 
-        problem.printProblemAsGrid(false, false); */
+        problemGrid.printProblemAsGrid(false, false); 
+
+        Problem problem = new Problem();
+
+        //problem.printProblem(false, false);
 
     }
 
