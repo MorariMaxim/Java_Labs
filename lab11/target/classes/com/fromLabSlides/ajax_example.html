@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" />
+    <script>
+      $(document).ready(function () {
+        $(".product-name").append("aaa");
+        $.ajax({
+          url: "http://localhost:8081/products/1",
+        }).then(function (product) {
+          $(".product-id").append(product.id);
+          $(".product-name").append(product.name);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <p class="product-id">The ID is</p>
+      <p class="product-name">The name is</p>
+    </div>
+  </body>
+</html>
