@@ -70,16 +70,15 @@ public class DataBaseServices {
 
         return null;
     }
+    
 
-    public static String changeBook(Long id, BookRequest updatedBook) {
-
-        System.out.println("updatedBook:" + updatedBook);
+    public static String changeBook(Long id, String newTitle) {
 
         Book foundBook = bookRepository.findById(id);
 
         if (foundBook != null) {
 
-            foundBook.setTitle(updatedBook.getTitle());
+            foundBook.setTitle(newTitle);
 
             if (bookRepository.create(foundBook) == null)
                 return "Server error";

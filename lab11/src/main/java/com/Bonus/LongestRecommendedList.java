@@ -2,19 +2,11 @@ package com.Bonus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,25 +16,22 @@ import com.DataBase.example.repository.Repository;
 import com.server.DataBaseServices;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/longestRecommendedList")
 @Tag(name = "Bonus Service", description = "Returns the longest recommended list of books")
 public class LongestRecommendedList {
-    /*
-     * @GetMapping("")
-     * 
-     * @Operation(summary = "Get the list")
-     * public List<Book> getList() {
-     * 
-     * List<Book> books = DataBaseServices.getBooks("%");
-     * 
-     * return solve(books);
-     * }
-     */
 
-    public static void main(String[] args) {
+    @GetMapping("")
+    @Operation(summary = "Get the longest recommended list of books") 
+    public List<Book> getLongestRecommendedList() {
+        return solve();
+    }
+
+    public static List<Book> solve() {
         List<Book> books = DataBaseServices.getBooks("%");
 
         int booksSize = books.size();
@@ -53,30 +42,25 @@ public class LongestRecommendedList {
 
         Random rand = new Random();
 
-        for (int firstBook = 0; firstBook < booksSize - 1; firstBook++) {
+        for (int firstBookIndex = 0; firstBookIndex < booksSize - 1; firstBookIndex++) {
 
-            for (int secondBook = firstBook + 1; secondBook < booksSize; secondBook++) {
+            for (int secondBookIndex = firstBookIndex + 1; secondBookIndex < booksSize; secondBookIndex++) {
 
-                if (books.get(firstBook).getPublication().compareTo(books.get(secondBook).getPublication()) < 0) {
+                Book firstBook = books.get(firstBookIndex);
+                Book secondBook = books.get(secondBookIndex);
+
+                if (firstBook.getPublication() != null && secondBook.getPublication() != null
+                        && firstBook.getPublication().compareTo(secondBook.getPublication()) < 0) {
 
                     if (rand.nextDouble() < chance) {
-                        precedence[firstBook][secondBook] = true;
+                        precedence[firstBookIndex][secondBookIndex] = true;
 
-                        System.out.println(books.get(firstBook).getPublication() + " precedes"
-                                + books.get(secondBook).getPublication());
+                        System.out.println(books.get(firstBookIndex).getPublication() + " precedes"
+                                + books.get(secondBookIndex).getPublication());
                     }
                 }
             }
         }
-        /*
-         * Map<Long, Integer> idToVertex = new HashMap<>();
-         * Map<Integer, Long> vertexToId = new HashMap<>();
-         * 
-         * for (int i = 0; i < booksSize; i++) {
-         * vertexToId.put(i, books.get(i).getId());
-         * idToVertex.put(books.get(i).getId(), i);
-         * }
-         */
 
         Graph graph = new Graph(booksSize);
 
@@ -97,6 +81,9 @@ public class LongestRecommendedList {
             var book = books.get(integer);
             System.out.print(book.getTitle() + ", " + yearFromDate(book.getPublication()) + " -> ");
         }
+
+        return path.stream().map(vertex -> books.get(vertex)).collect(Collectors.toList());
+
     }
 
     static String yearFromDate(Date date) {

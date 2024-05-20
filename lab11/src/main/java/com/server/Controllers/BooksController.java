@@ -1,7 +1,6 @@
 package com.server.Controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Bonus.LongestRecommendedList;
 import com.DataBase.example.model.Book;
 import com.server.DataBaseServices;
 import com.server.Controllers.requests.BookRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -43,12 +45,50 @@ public class BooksController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
+    /*
+     * @PostMapping("")
+     * 
+     * @Operation(summary = "Create a new book", description =
+     * "Create a new book with the provided title and author name.")
+     * public ResponseEntity<Book> createBook(
+     * 
+     * @RequestParam("title") String title,
+     * 
+     * @RequestParam("authorName") String authorName) {
+     * 
+     * Book created = DataBaseServices.createBook(title, authorName);
+     * if (created != null) {
+     * return ResponseEntity.status(HttpStatus.CREATED).body(created);
+     * } else {
+     * return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+     * }
+     * }
+     */
+
+    /*
+     * @PutMapping("/{id}")
+     * 
+     * @Operation(summary = "Update a book's title", description =
+     * "Update the title of an existing book by its ID.")
+     * public String updateBook(
+     * 
+     * @PathVariable("id") Long id,
+     * 
+     * @RequestParam("newTitle") String newTitle) {
+     * 
+     * return DataBaseServices.changeBook(id, newTitle);
+     * }
+     */
+
     @PostMapping("")
     @Operation(summary = "Create a new book", description = "Create a new book with the provided title and author name.")
-    public ResponseEntity<Book> createBook(@RequestBody Book newBook) {
-        Book createdBook = DataBaseServices.createBook(newBook.getTitle(), null);
-        if (createdBook != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
+    public ResponseEntity<Book> createBook(@RequestBody BookRequest bookRequest) {
+        String title = bookRequest.getTitle();
+        String authorName = bookRequest.getAuthorName();
+
+        Book created = DataBaseServices.createBook(title, authorName);
+        if (created != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -58,11 +98,12 @@ public class BooksController {
     @Operation(summary = "Update a book's title", description = "Update the title of an existing book by its ID.")
     public ResponseEntity<String> updateBook(
             @PathVariable("id") Long id,
-            @RequestBody BookRequest updatedBookRequest) {
+            @RequestBody BookRequest updatedBook) {
 
-        String result = DataBaseServices.changeBook(id, updatedBookRequest);
-        if (result.equals("Book successfully updated")) {
-            return ResponseEntity.ok("Book successfully updated");
+        // Assuming DataBaseServices.changeBookName is updated to accept a Book object
+        String result = DataBaseServices.changeBook(id, updatedBook.getTitle());
+        if (result.equals("Book updated successfully")) {
+            return ResponseEntity.ok("Book updated successfully");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update book");
         }
@@ -74,5 +115,11 @@ public class BooksController {
             @PathVariable("id") Long id) {
 
         return DataBaseServices.deleteBook(id);
+    }
+
+    @GetMapping("longestRecommendedList")
+    @Operation(summary = "Get the longest recommended list of books") 
+    public List<Book> getLongestRecommendedList() {
+        return LongestRecommendedList.solve();
     }
 }
