@@ -2,11 +2,15 @@ package com.server;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import com.DataBase.example.model.Author;
 import com.DataBase.example.model.Book;
 import com.DataBase.example.model.ReadingList;
 import com.DataBase.example.persistence.EntityManagerFactorySingleton;
 import com.DataBase.example.repository.Repository;
+import com.server.Controllers.requests.BookRequest;
 
 public class DataBaseServices {
 
@@ -37,7 +41,7 @@ public class DataBaseServices {
         return ReadingListRepo.findById(id);
     }
 
-    static public Boolean createBook(String title, String authorName) {
+    static public Book createBook(String title, String authorName) {
         try {
             Repository<Book> bookRepository = new Repository<>(
                     EntityManagerFactorySingleton.getEntityManagerFactory(),
@@ -56,34 +60,35 @@ public class DataBaseServices {
 
             newBook.addAuthor(author);
 
-            bookRepository.create(newBook);
+            return bookRepository.create(newBook);
 
-            System.out.println("Created a new book: " + newBook);
-
-            return true;
         }
 
         catch (Exception e) {
             System.err.println("Error creating book: " + e.getMessage());
         }
 
-        return false;
+        return null;
     }
 
-    public static String changeBookName(Long id, String newTItle) {
-        Book book = bookRepository.findById(id);
+    public static String changeBook(Long id, BookRequest updatedBook) {
 
-        if (book != null) {
-            book.setTitle(newTItle);
+        System.out.println("updatedBook:" + updatedBook);
 
-            bookRepository.create(book);
+        Book foundBook = bookRepository.findById(id);
 
-            return "Changed book title";
+        if (foundBook != null) {
+
+            foundBook.setTitle(updatedBook.getTitle());
+
+            if (bookRepository.create(foundBook) == null)
+                return "Server error";
+            return "Book successfully updated";
         }
 
-        else {
+        else
             return "No such book id";
-        }
+
     }
 
     public static String deleteBook(Long id) {

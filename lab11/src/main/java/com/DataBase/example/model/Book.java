@@ -27,6 +27,10 @@ public class Book {
     })
     private Long id;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -113,7 +117,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book [title=" + title + ", publication=" + publication + ", authors=" + authors + ", publishingHouse="
+        return "Book [title=" + title + ", id = " + id + ", publication=" + publication + ", authors=" + authors
+                + ", publishingHouse="
                 + publishingHouse + "]";
     }
 
@@ -122,7 +127,5 @@ public class Book {
         this.publication = publication;
         this.publishingHouse = publishingHouse;
     }
-
-    
 
 }

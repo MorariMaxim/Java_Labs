@@ -15,15 +15,18 @@ public class Repository<T> {
         this.entityClass = entityClass;
     }
 
-    public void create(T entity) {
+    public T create(T entity) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
             // em.persist(entity);
-            em.merge(entity); // this solves (detached entity passed to persist(:
-                              // com.DataBase.example.model.Book))
+            var managed = em.merge(entity); // this solves (detached entity passed to persist(:            
+            // com.DataBase.example.model.Book))
+            System.out.println(entity);
             tx.commit();
+
+            return managed;
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -32,6 +35,7 @@ public class Repository<T> {
         } finally {
             em.close();
         }
+        return null;
     }
 
     public void delete(T entity) {

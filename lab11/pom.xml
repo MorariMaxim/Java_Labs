@@ -74,14 +74,16 @@
     <version>5.7.3</version>
 </dependency> -->
 
-    <!-- Spring Boot Security Starter -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-security</artifactId>
-        <version>3.2.0</version>
-    </dependency>
+    <!-- Spring Boot Security Starter --> 
 
     <!-- JSON Web Tokens (JWT) -->
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.30</version>
+      <scope>provided</scope>
+  </dependency>
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt</artifactId>

@@ -20,7 +20,12 @@ public class BookSerializer extends JsonSerializer<Book> {
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", book.getId());
         jsonGenerator.writeStringField("title", book.getTitle());
-        jsonGenerator.writeStringField("publicationDate", getFormatedDate(book.getPublication()));
+        Date publicationDate = book.getPublication();
+        if (publicationDate != null) {
+            jsonGenerator.writeStringField("publicationDate", getFormatedDate(publicationDate));
+        } else {
+            jsonGenerator.writeNullField("publicationDate");
+        }
 
         jsonGenerator.writeArrayFieldStart("readingLists");
         for (ReadingList readingList : book.getReadingsLists()) {

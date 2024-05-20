@@ -1,6 +1,7 @@
 package com.server.Controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.DataBase.example.model.Book;
 import com.server.DataBaseServices;
+import com.server.Controllers.requests.BookRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -42,25 +45,27 @@ public class BooksController {
 
     @PostMapping("")
     @Operation(summary = "Create a new book", description = "Create a new book with the provided title and author name.")
-    public ResponseEntity<String> createBook(
-            @RequestParam("title") String title,
-            @RequestParam("authorName") String authorName) {
-
-        boolean created = DataBaseServices.createBook(title, authorName);
-        if (created) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Book created successfully");
+    public ResponseEntity<Book> createBook(@RequestBody Book newBook) {
+        Book createdBook = DataBaseServices.createBook(newBook.getTitle(), null);
+        if (createdBook != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create book");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a book's title", description = "Update the title of an existing book by its ID.")
-    public String updateBook(
+    public ResponseEntity<String> updateBook(
             @PathVariable("id") Long id,
-            @RequestParam("newTitle") String newTitle) {
+            @RequestBody BookRequest updatedBookRequest) {
 
-        return DataBaseServices.changeBookName(id, newTitle);
+        String result = DataBaseServices.changeBook(id, updatedBookRequest);
+        if (result.equals("Book successfully updated")) {
+            return ResponseEntity.ok("Book successfully updated");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update book");
+        }
     }
 
     @DeleteMapping("/{id}")
