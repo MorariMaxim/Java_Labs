@@ -1,0 +1,11 @@
+curl -X DELETE http://localhost:8081/books/85
+
+curl -X PUT -d "newTitle=The Great Gatsby" http://localhost:8081/books/78
+
+curl -X POST "http://localhost:8081/books?title=MyBook&authorName=Myself"
+
+http://localhost:8081/books
+
+http://localhost:8081/authors
+
+http://localhost:8081/swagger-ui/index.html#/
