@@ -1,0 +1,63 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "BytecodeManipulation",
+            "request": "launch",
+            "mainClass": "com.example.BytecodeManipulation",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "TestClass1",
+            "request": "launch",
+            "mainClass": "com.testClasses.TestClass1",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "ClassNameExtractor",
+            "request": "launch",
+            "mainClass": "com.example.ClassNameExtractor",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "PackageNameExtractor",
+            "request": "launch",
+            "mainClass": "com.example.PackageNameExtractor",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "Demo",
+            "request": "launch",
+            "mainClass": "com.example.Demo",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "TestClass",
+            "request": "launch",
+            "mainClass": "com.example.TestClass",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "com.example.Main",
+            "projectName": "lab12"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        }
+    ]
+}
