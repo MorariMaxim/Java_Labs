@@ -1,0 +1,11 @@
+Alogirtum Delta Stepping mentine distantele tentative de la sursa la celelalte noduri; o colectie de buckets, fiecare avand un interval egal cu delta, in care se mentin nodurile a caror distanta de la sursa inca nu s-a definitivat.
+
+Alogritmul cauta in continuu urmatorul non-empty bucket, cauta si relaxeaza light requests pentru toate nodurile din el. Aceasta este o faza a algoritmului, inainte de care se sterg toate nodurile din bucket. Dupa relaxari, noduri pot fi reinserate in el. Aceste faze continua pana ce bucketul devine vid. Pe parcursul tuturor faze se tine minte multimea tuturor nodurilor ce au fost in bucketul curent. Cand el devine vid, se cauta si relaxeaza heavy requests pentru multimea discutata mai sus. 
+
+Toata aceasta procedura acum se repeta pana ce nu mai sunt non-empty buckets.
+
+Un request contine nodul a carui distanta se compara cu cea tentativa, si distanta in sine. Un light request poate fi gasit de la un nod parinte pentru un copil, doara daca valoare arcul parinte-copil <= delta. Similar pentru heavy request, doar ca valoarea arcului > delta.
+
+A relaxa un request inseamna a compara noua distanta cu cea tentativa, si in caz ca noua distanta e mai mica se schimba eventual bucketul nodului respectiv.
+
+Paralelizarea se obtine prin cautarea si relaxarea heavy/light requesturilor in paralel.
